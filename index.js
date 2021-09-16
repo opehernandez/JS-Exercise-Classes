@@ -22,6 +22,7 @@ class Airplane {
   }
 }
 
+
 /*
 // 👇 COMPLETE YOUR WORK BELOW 👇
 // 👇 COMPLETE YOUR WORK BELOW 👇
@@ -42,8 +43,32 @@ class Airplane {
 */
 
 class Person {
-  
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+    this.stomach = [];
+  }
+
+  eat(someFood) {
+    if (this.stomach.length >= 10) {
+      console.log(`You are full`);
+    }
+    else {
+      this.stomach.push(someFood);
+    }
+  }
+
+  poop() {
+    this.stomach.splice(0, this.stomach.length)
+  }
+
+  toString() {
+    return `${this.name}, ${this.age}`
+  }
 }
+
+const manny = new Person("Manny", 26);
+console.log(manny.toString())
 
 /*
   TASK 2
@@ -60,8 +85,55 @@ class Person {
 */
 
 class Car {
-  
+  constructor(model, milesPerGallon) {
+    this.model = model;
+    this.milesPerGallon = milesPerGallon;
+    this.tankCap = 30;
+    this.tank = 0;
+    this.odometer = 0;
+  }
+
+  fill(gallons) {
+    console.log(`Attempting to fill up...`)
+    if(gallons <= 0) {
+      console.log(`What are you trying to pump? Air?`);
+    }
+    else if(this.tank >= this.tankCap) {   //check if tank is full
+      console.log(`Your Tank is full!!!`);
+    }
+    else if(gallons > this.tankCap - this.tank) {
+      console.log(`You only pumped ${this.tankCap - this.tank} gallons, ${gallons - (this.tankCap - this.tank)} gallons were left out`)
+      this.tank = this.tankCap;
+    }
+    else {
+      this.tank += gallons;
+      console.log(`you pumped ${this.tank} gallons`)
+    }
+  }
+
+  drive(milesToDrive) {
+    console.log(`Attempting to Drive...`)
+    if(this.tank === 0) {
+      console.log(`Your tank is empty, fill up before driving`)
+    }
+    else if (milesToDrive > this.tank * this.milesPerGallon) {
+      this.odometer = this.tank * this.milesPerGallon;
+      this.tank = 0;
+      console.log(`I ran out of fuel at ${this.odometer} miles. tank: ${this.tank}`)
+      return `I ran out of fuel at ${this.odometer} miles. Tank: ${this.tank}`
+    }
+    else {
+      this.odometer = milesToDrive;
+      this.tank = (this.tank - milesToDrive / this.milesPerGallon);
+      console.log(`You reached your destination. tank: ${this.tank.toFixed(2)} gallons, odometer: ${this.odometer}`);
+    
+    }
+  }
 }
+
+const dodge = new Car("dodge", 20);
+dodge.fill(0)
+dodge.drive(201);
 
 /*
   TASK 3
