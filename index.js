@@ -148,9 +148,19 @@ dodge.drive(201);
         + {name} and {location} of course come from the instance's own properties.
 */
 class Lambdasian {
-  
+  constructor(args) {
+    this.name = args.name;
+    this.age = args.age;
+    this.location = args.location;
+  }
+
+  speak() {
+    return `Hello my name is ${this.name}, I am from ${this.location}`
+  }
 }
 
+const jenny = new Lambdasian({name : "Jennifer", age : 26, location : "Arlington"})
+console.log(jenny)
 /*
   TASK 4
     - Write an Instructor class extending Lambdasian.
@@ -165,8 +175,30 @@ class Lambdasian {
         + `demo` receives a `subject` string as an argument and returns the phrase 'Today we are learning about {subject}' where subject is the param passed in.
         + `grade` receives a `student` object and a `subject` string as arguments and returns '{student.name} receives a perfect score on {subject}'
 */
-class Instructor {
+class Instructor extends Lambdasian {
+  constructor(args) {
+    super(args);
+    this.specialty = args.specialty;
+    this.favLanguage = args.favLanguage;
+    this.catchPhrase = args.catchPhrase;
 
+  }
+
+  grades(student) {
+    console.log(`Instructor ${this.name} is attempting to grade ${student} assignments`)
+    let score = (Math.random() * 100).toFixed(2);
+    console.log(`Final grade: ${score}`)
+    return score;
+    
+  }
+
+  demo(subject) {
+    return `Today we are learning about ${subject}`
+  }
+
+  grade(student, subject) {
+    return `${student.name} receives a perfect score on ${subject}`
+  }
 }
 /*
   TASK 5
@@ -183,9 +215,50 @@ class Instructor {
         + `PRAssignment` a method that receives a subject as an argument and returns `student.name has submitted a PR for {subject}`
         + `sprintChallenge` similar to PRAssignment but returns `student.name has begun sprint challenge on {subject}`
 */
-class Student {
-   
+class Student extends Lambdasian{
+   constructor(args) {
+     super(args);
+     this.previousBackground = args.previousBackground;
+     this.className = args.className;
+     this.favSubjects = args.favSubjects;
+     this.grade = 50;
+   }
+
+   graduate(inst) {
+     console.log(`Attempting to graduate ${this.name}...`)
+     let count = 0;
+     while (this.grade < 70) {
+      console.log("Not there yet, your score is too low");
+      console.log(`Asking instructor ${inst.name} to grade you again....`);
+      this.grade = inst.grades(this.name)
+      count++
+     } 
+     console.log(`Congratulations ${this.name}!!! you graduated, it took ${count} tries to do it. Final score: ${this.grade}`)
+   }
+
+   listSubjects() {
+     return `Loving ${this.favSubjects}`
+   }
+
+   PRAssignment(subj) {
+     return `${this.name} has submitted a PR for ${subj}`
+   }
+
+   sprintChallenge(subj) {
+     return `${this.name} has begun sprint challenge on ${subj}`
+   }
 }
+
+const mike = new Student({
+  name : "Mike",
+  age : 25,
+  location : "Dallas",
+  previousBackground : "Logger",
+  className : "Web48",
+  favSubjects : "Javascript"
+})
+
+
 
 /*
   TASK 6
@@ -200,8 +273,20 @@ class Student {
         + `standUp` a method that takes in a slack channel and returns `{name} announces to {channel}, @channel standy times!`
         + `debugsCode` a method that takes in a student object and a subject and returns `{name} debugs {student.name}'s code on {subject}`
 */
-class ProjectManager {
-   
+class ProjectManager extends Instructor {
+   constructor(args) {
+     super(args);
+     this.gradClassName = args.gradClassName;
+     this.favInstructor = args.favInstructor;
+   }
+
+   standUp(channel) {
+     return `${this.name} announces to ${channel}, @channel standy times!`
+   }
+
+   debugsCode (student, subj) {
+     return `${this.name} debugs ${student.name} code on ${subj}`
+   }
 }
 /*
   STRETCH PROBLEM (no tests!)
@@ -212,6 +297,19 @@ class ProjectManager {
       + If the student's grade is above a 70% let them graduate! Otherwise go back to grading their assignments to increase their score.
 */
 
+const john = new Instructor({
+  name : "John",
+  age : 39,
+  location : "Los Angeles",
+  specialty : "Grading JS",
+  favLanguage : "JS",
+  catchPhrase : "Just do it"
+})
+
+console.log(john)
+console.log(mike)
+
+mike.graduate(john);
 
 //End of Challenge
 /* 🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑 Please do not modify anything below this line 🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑 */
